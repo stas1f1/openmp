@@ -20,6 +20,7 @@ int main(int argc, char** argv)
 	MPI_Recv_init(&rbuf[1], 1, MPI_FLOAT, next, 6, MPI_COMM_WORLD, &reqs[1]);
 	MPI_Send_init(&sbuf[0], 1, MPI_FLOAT, prev, 6, MPI_COMM_WORLD, &reqs[2]);
 	MPI_Send_init(&sbuf[1], 1, MPI_FLOAT, next, 5, MPI_COMM_WORLD, &reqs[3]);
+
 	for (int i = 0; i < 4; i++)
 	{
 		sbuf[0] = rank;
@@ -27,10 +28,10 @@ int main(int argc, char** argv)
 		MPI_Startall(4, reqs);
 		MPI_Waitall(4, reqs, stats);
 	}
-
 	MPI_Testall(4, reqs, &done, stats);
+
 	if (done) { 
-		std::cout << "Process: " << rank 
+		std::cout << "# of process: " << rank 
 		<< " Message from prev rank " << prev << ": " << rbuf[0] 
 		<< " Message from next rank " << next << ": " << rbuf[1]
 		<< std::endl; 
